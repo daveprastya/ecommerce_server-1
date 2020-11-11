@@ -22,14 +22,17 @@ class UserController{
         throw { msg: "Wrong Email / Password!", status: 401 };
       }
       else{
-        // console.log(data);
         const token = signToken({
           id: data.id,
           username: data.username,
           email:data.email,
           role: data.role
         })
-        res.status(200).json(token);
+        const userDetail = {
+          token: token,
+          username: data.username
+        }
+        res.status(200).json(userDetail);
       }
     } catch (err) {
       next(err);

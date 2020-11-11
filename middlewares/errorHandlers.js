@@ -3,7 +3,6 @@
 module.exports = function (err, req, res, next){
   let status = 500;
   let msg = err.message || "Internal Server Error!";
-  // console.log(err);
   if(err.type === "Validation error" || err.type === "notNull Violation"){
     status = 400;
     msg = err.message;

@@ -11,7 +11,7 @@ class ProductController{
       stock: req.body.stock
     }
     try {
-      const data = await Product.create(objParams)
+      const data = await Product.create(objParams);
       res.status(201).json(data);
     } catch (err) {
       next(err.errors[0]);
