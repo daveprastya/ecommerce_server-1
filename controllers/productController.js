@@ -1,6 +1,6 @@
 'use strict'
 
-const { Product } = require("../models");
+const { Product, Category } = require("../models");
 
 class ProductController{
   static async postProducts(req, res, next){
@@ -8,7 +8,8 @@ class ProductController{
       name: req.body.name,
       imgUrl: req.body.imgUrl,
       price: req.body.price,
-      stock: req.body.stock
+      stock: req.body.stock,
+      CategoryId: req.body.CategoryId
     }
     try {
       const data = await Product.create(objParams);
@@ -21,7 +22,7 @@ class ProductController{
 
   static async getProducts(req, res, next){
     try {
-      const data = await Product.findAll()
+      const data = await Product.findAll({ include: [Category] })
       res.status(200).json(data);
     } catch (err) {
       next(err.errors[0]);
@@ -46,7 +47,8 @@ class ProductController{
       name: req.body.name,
       imgUrl: req.body.imgUrl,
       price: req.body.price,
-      stock: req.body.stock
+      stock: req.body.stock,
+      CategoryId: req.body.CategoryId
     }
     try {
       const data = await Product.update(objParams, {
