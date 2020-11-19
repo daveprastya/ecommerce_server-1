@@ -6,9 +6,9 @@ class CartController {
   static async getCarts(req, res, next){
     try {
       const data = await Cart.findAll({
-        attributes: ['ProductId', 
-         [sequelize.fn('count', sequelize.col('ProductId')), 'count']],
-        group: 'ProductId'
+        attributes: [[sequelize.fn('count', sequelize.col('ProductId')), 'count'], 'UserId'],
+        group: ['Product.id', 'UserId'],
+        include: ['Product']
       })
       res.status(200).json(data);
     } catch (err) {
@@ -49,12 +49,26 @@ class CartController {
     const idParams = req.params.id
     try {
       const data = await Cart.destroy({
-        where: { id: idParams}
+        where: { ProductId: idParams}
       })
       res.status(200).json(data);
     } catch (err) {
       next(err);
     }
+  }
+
+  static decreaseCart(req, res, next) {
+    const idParams = req.params.id
+    Cart.findAll({ where: { ProductId: idParams }})
+    .then(data => {
+      return Cart.destroy({ where: { id: data[0].id }})
+    })
+    .then(data1 => {
+      res.status(200).json('decrease cart success!')
+    })
+    .catch(err => {
+      next(err);
+    })
   }
 }
 
