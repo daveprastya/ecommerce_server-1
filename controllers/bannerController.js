@@ -5,7 +5,7 @@ const { Banner } = require('../models')
 class BannerController {
   static async getBanners(req, res, next){
     try {
-      const data = await Banner.findAll();
+      const data = await Banner.findAll({ where: { status: 'Active' }});
       res.status(200).json(data);
     } catch (err) {
       next(err.errors[0]);

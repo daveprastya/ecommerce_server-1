@@ -6,6 +6,7 @@ class CategoryController {
   static async getCategories(req, res, next){
     try {
       const data = await Category.findAll();
+      console.log(data);
       res.status(200).json(data);
     } catch (err) {
       next(err.errors[0]);

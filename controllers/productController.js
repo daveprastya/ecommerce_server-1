@@ -59,6 +59,18 @@ class ProductController{
       next(err.errors[0]);
     }
   }
+
+  static async getProductbyCategory(req, res, next){
+    const CategoryId = req.params.id
+    try {
+      const data = await Product.findAll({
+        where: { CategoryId }
+      })
+      res.status(200).json(data);
+    } catch (err) {
+      next(err.errors[0]);
+    }
+  }
 }
 
 module.exports = ProductController;

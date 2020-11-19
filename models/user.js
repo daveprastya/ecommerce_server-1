@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { hashPassword } = require('../helpers/bycrpt');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -10,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      User.hasMany(models.Cart)
     }
   };
   User.init({
@@ -63,6 +64,12 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.STRING
   }, {
     sequelize,
+    hooks: {
+      beforeCreate: (user, options) => {
+        user.role = 'user'
+        user.password = hashPassword(user.password)
+      }
+    },
     modelName: 'User',
   });
   return User;
