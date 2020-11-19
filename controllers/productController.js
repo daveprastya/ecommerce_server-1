@@ -64,9 +64,15 @@ class ProductController{
     const CategoryId = req.params.id
     try {
       const data = await Product.findAll({
-        where: { CategoryId }
+        where: { CategoryId },
+        include: [Category]
       })
-      res.status(200).json(data);
+      if(!data){
+        res.status(401).json('Data not Found!')
+      }
+      else {
+        res.status(200).json(data);
+      }
     } catch (err) {
       next(err.errors[0]);
     }
